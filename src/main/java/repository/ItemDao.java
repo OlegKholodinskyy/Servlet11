@@ -34,5 +34,21 @@ public class ItemDao extends SessionFactoryBuilder implements DAOInterface {
         }
         return items;
     }
+
+    public Item getItemById(long id) {
+        return null;
+    }
+
+    public void deleteItem(long id) {
+
+    }
+
+    public Item saveItem(Item item) {
+        return null;
+    }
+
+    public Item updateItem(long id) {
+        return null;
+    }
 }
 

@@ -9,4 +9,8 @@ import java.util.ArrayList;
  */
 public interface DAOInterface {
     public ArrayList<Item> getAllItems();
+    public Item getItemById(long id);
+    public void deleteItem(long id);
+    public Item saveItem(Item item);
+    public Item updateItem(long id);
 }
