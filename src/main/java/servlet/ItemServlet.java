@@ -29,13 +29,10 @@ public class ItemServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.getWriter().print("test");
-
-        List<Item> items = itemRepository.getAllItems();
-    //    req.setAttribute("items", items);
-        System.out.println(items.size());
-        RequestDispatcher dispatcher = req.getServletContext().getRequestDispatcher("/index.jsp");
-        dispatcher.forward(req,resp);
+        //  List<Item> items = itemRepository.getAllItems();
+        //  req.setAttribute("items", items);
+        RequestDispatcher dispatcher = req.getRequestDispatcher("/itemsJSP.jsp");
+        dispatcher.forward(req, resp);
     }
 
     @Override
