@@ -29,8 +29,8 @@ public class ItemServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //  List<Item> items = itemRepository.getAllItems();
-        //  req.setAttribute("items", items);
+          List<Item> items = itemRepository.getAllItems();
+          req.setAttribute("items", items);
         RequestDispatcher dispatcher = req.getRequestDispatcher("/itemsJSP.jsp");
         dispatcher.forward(req, resp);
     }
