@@ -101,8 +101,26 @@ public class ItemDao extends SessionFactoryBuilder implements DAOInterface {
         return item;
     }
 
-    public Item updateItem(long id) {
-        return null;
+    public Item updateItem(Item item) {
+        Session session = null;
+        Transaction tr = null;
+        try {
+            session = createSessionFactory().openSession();
+            tr = session.getTransaction();
+            tr.begin();
+            session.update(item);
+            tr.commit();
+            System.out.println("updateItem");
+        } catch (HibernateException e) {
+            System.out.println(e.getMessage());
+            if (tr != null) {
+                tr.rollback();
+            }
+        } finally {
+            if (session != null)
+                session.close();
+        }
+        return item;
     }
 }
 
