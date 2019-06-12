@@ -12,6 +12,7 @@ import java.util.ArrayList;
  */
 public class ItemDao extends SessionFactoryBuilder implements DAOInterface {
     ArrayList<Item> items = null;
+    Item item = null;
 
     public ArrayList<Item> getAllItems() {
         Session session = null;
@@ -36,15 +37,68 @@ public class ItemDao extends SessionFactoryBuilder implements DAOInterface {
     }
 
     public Item getItemById(long id) {
-        return null;
+        Session session = null;
+        Transaction tr = null;
+        try {
+            session = createSessionFactory().openSession();
+            tr = session.getTransaction();
+            tr.begin();
+            item = (Item) session.get(Item.class, id);
+            tr.commit();
+            System.out.println("getAllItems");
+        } catch (HibernateException e) {
+            System.out.println(e.getMessage());
+            if (tr != null) {
+                tr.rollback();
+            }
+        } finally {
+            if (session != null)
+                session.close();
+        }
+        return item;
     }
 
-    public void deleteItem(long id) {
-
+    public void deleteItem(Item item) {
+        Session session = null;
+        Transaction tr = null;
+        try {
+            session = createSessionFactory().openSession();
+            tr = session.getTransaction();
+            tr.begin();
+            session.delete(item);
+            tr.commit();
+            System.out.println("deleteItem");
+        } catch (HibernateException e) {
+            System.out.println(e.getMessage());
+            if (tr != null) {
+                tr.rollback();
+            }
+        } finally {
+            if (session != null)
+                session.close();
+        }
     }
 
     public Item saveItem(Item item) {
-        return null;
+        Session session = null;
+        Transaction tr = null;
+        try {
+            session = createSessionFactory().openSession();
+            tr = session.getTransaction();
+            tr.begin();
+            session.save(item);
+            tr.commit();
+            System.out.println("saveItem");
+        } catch (HibernateException e) {
+            System.out.println(e.getMessage());
+            if (tr != null) {
+                tr.rollback();
+            }
+        } finally {
+            if (session != null)
+                session.close();
+        }
+        return item;
     }
 
     public Item updateItem(long id) {

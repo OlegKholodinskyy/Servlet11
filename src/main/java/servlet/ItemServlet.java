@@ -34,7 +34,7 @@ public class ItemServlet extends HttpServlet {
         List<Item> items = itemRepository.getAllItems();
     //    req.setAttribute("items", items);
         System.out.println(items.size());
-        RequestDispatcher dispatcher = req.getServletContext().getRequestDispatcher("/jsp/itemsJSP.jsp");
+        RequestDispatcher dispatcher = req.getServletContext().getRequestDispatcher("/index.jsp");
         dispatcher.forward(req,resp);
     }
 

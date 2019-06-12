@@ -10,11 +10,7 @@ import java.util.ArrayList;
 public class Main {
     public static void main(String[] args) {
         DAOInterface dao = new ItemDao();
-
-
         ArrayList<Item> items = dao.getAllItems();
-
-
         for (Item item: items) {
             System.out.println(item);
         }
