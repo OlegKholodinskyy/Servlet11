@@ -29,11 +29,7 @@ public class DeleteItem extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String idItem = req.getParameter("id");
         Long id = Long.parseLong(idItem);
-        System.out.println("LOG: item " + id + " is going to delete");
         repo.deleteItem(id);
-        System.out.println("LOG: item " + id + " was deleted");
-//        RequestDispatcher dispatcher =    req.getServletContext().getRequestDispatcher("/jsp/ItemsJSP.jsp");
-//        dispatcher.(req,resp);
 
         resp.sendRedirect("/items");
 

@@ -43,14 +43,17 @@ public class ItemsServlet extends HttpServlet {
 
         List<Item> items = repo.getAllItems();
         req.setAttribute("items", items);
-        RequestDispatcher dispatcher =    req.getServletContext().getRequestDispatcher("/jsp/ItemsJSP.jsp");
-        dispatcher.forward(req,resp);
+        RequestDispatcher dispatcher = req.getServletContext().getRequestDispatcher("/jsp/ItemsJSP.jsp");
+        dispatcher.forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-       // resp.getWriter().write("Test");
+        String name = req.getParameter("name");
+        String description = req.getParameter("description");
 
+        repo.saveItem(new Item (name, LocalDate.now(), LocalDate.now(), description));
 
+        doGet(req,resp);
     }
 }
