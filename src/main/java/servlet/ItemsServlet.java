@@ -1,5 +1,7 @@
 package servlet;
 
+import controller.ItemController;
+import exception.ItemExistException;
 import model.Item;
 import repository.DAOInterface;
 import repository.ItemDao;
@@ -22,26 +24,16 @@ import java.util.List;
 @WebServlet(urlPatterns = "/items")
 public class ItemsServlet extends HttpServlet {
 
-    DAOInterface repo;
+    ItemController itemController= new ItemController();
 
     @Override
     public void init() throws ServletException {
-        String JDBC_DRIVER = "oracle.jdbc.driver.OracleDriver";
-        try {
-            Class.forName(JDBC_DRIVER);
-        } catch (ClassNotFoundException e) {
-            System.out.println("Class " + JDBC_DRIVER + " not found");
-            return;
-        }
-        repo = ItemDao.getInstanceItemDao();
     }
 
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.getWriter().write("Test1");
-
-        List<Item> items = repo.getAllItems();
+        List<Item> items = itemController.getAllItems();
         req.setAttribute("items", items);
         RequestDispatcher dispatcher = req.getServletContext().getRequestDispatcher("/jsp/ItemsJSP.jsp");
         dispatcher.forward(req, resp);
@@ -52,7 +44,11 @@ public class ItemsServlet extends HttpServlet {
         String name = req.getParameter("name");
         String description = req.getParameter("description");
 
-        repo.saveItem(new Item (name, LocalDate.now(), LocalDate.now(), description));
+        try {
+            itemController.saveItem(new Item (name, LocalDate.now(), LocalDate.now(), description));
+        } catch (ItemExistException e) {
+            System.out.println(e.getMessage());
+        }
 
         doGet(req,resp);
     }

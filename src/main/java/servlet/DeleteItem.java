@@ -1,5 +1,6 @@
 package servlet;
 
+import controller.ItemController;
 import repository.DAOInterface;
 import repository.ItemDao;
 
@@ -18,7 +19,7 @@ import java.io.IOException;
 @WebServlet(urlPatterns = "/deleteItem")
 public class DeleteItem extends HttpServlet {
 
-    DAOInterface repo = ItemDao.getInstanceItemDao();
+    ItemController itemController = new ItemController();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -27,9 +28,8 @@ public class DeleteItem extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String idItem = req.getParameter("id");
-        Long id = Long.parseLong(idItem);
-        repo.deleteItem(id);
+        Long id = Long.parseLong(req.getParameter("id"));
+        itemController.deleteItem(id);
 
         resp.sendRedirect("/items");
 

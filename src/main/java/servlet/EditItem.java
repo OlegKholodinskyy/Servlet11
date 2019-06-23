@@ -1,5 +1,6 @@
 package servlet;
 
+import controller.ItemController;
 import model.Item;
 import org.hibernate.boot.jaxb.SourceType;
 import repository.DAOInterface;
@@ -21,15 +22,14 @@ import java.util.Enumeration;
  */
 @WebServlet(urlPatterns = "/editItem")
 public class EditItem extends HttpServlet {
-    DAOInterface repo = ItemDao.getInstanceItemDao();
-    Item item;
+    ItemController itemController = new ItemController();
+    Item item = null;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String idItem = req.getParameter("id");
-        Long id = Long.parseLong(idItem);
+        Long id = Long.parseLong(req.getParameter("id"));
 
-        Item item = repo.getItemById(id);
+        Item item = itemController.getItemById(id);
         req.setAttribute("item", item);
 
         RequestDispatcher dispatcher = req.getServletContext().getRequestDispatcher("/jsp/EditItemJSP.jsp");
@@ -42,10 +42,9 @@ public class EditItem extends HttpServlet {
 
         String descriptionEdited = req.getParameter("description");
 
-        item = repo.getItemById(Long.parseLong(req.getParameter("id")));
-        item.setDescription(descriptionEdited);
+        item = itemController.getItemById(Long.parseLong(req.getParameter("id")));
 
-        repo.updateItem(item);
+        itemController.updateItem(item, descriptionEdited);
         resp.sendRedirect("/items");
 
     }
