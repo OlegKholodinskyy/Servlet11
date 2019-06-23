@@ -1,6 +1,7 @@
 package model;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 /**
@@ -13,16 +14,32 @@ public class Item {
 
     private Long id;
     private String name;
-    private Date dateCreated;
-    private Date lastUpdatedDate;
+    private LocalDate dateCreated;
+    private LocalDate lastUpdatedDate;
     private String description;
 
 
     public Item() {
     }
 
+
+    public Item(Long id, String name, LocalDate dateCreated, LocalDate lastUpdatedDate, String description) {
+        this.id = id;
+        this.name = name;
+        this.dateCreated = dateCreated;
+        this.lastUpdatedDate = lastUpdatedDate;
+        this.description = description;
+    }
+
+    public Item(String name, LocalDate dateCreated, LocalDate lastUpdatedDate, String description) {
+        this.name = name;
+        this.dateCreated = dateCreated;
+        this.lastUpdatedDate = lastUpdatedDate;
+        this.description = description;
+    }
+
     @Id
-    @SequenceGenerator(name = "ITEM_SEQ", sequenceName = "ITEM_SEQUENCE", allocationSize = 1)
+    @SequenceGenerator(name = "ITEM_SEQ", sequenceName = "SEQ_ITEM", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ITEM_SEQ")
     @Column(name = "ID")
     public Long getId() {
@@ -39,12 +56,12 @@ public class Item {
     }
 
     @Column(name = "DATE_CREATED")
-    public Date getDateCreated() {
+    public LocalDate getDateCreated() {
         return dateCreated;
     }
 
     @Column(name = "LAST_UPDATED_DATE")
-    public Date getLastUpdatedDate() {
+    public LocalDate getLastUpdatedDate() {
         return lastUpdatedDate;
     }
 
@@ -53,7 +70,7 @@ public class Item {
         return description;
     }
 
-    public void setLastUpdatedDate(Date lastUpdatedDate) {
+    public void setLastUpdatedDate(LocalDate lastUpdatedDate) {
         this.lastUpdatedDate = lastUpdatedDate;
     }
 
@@ -61,7 +78,7 @@ public class Item {
         this.name = name;
     }
 
-    public void setDateCreated(Date dateCreated) {
+    public void setDateCreated(LocalDate dateCreated) {
         this.dateCreated = dateCreated;
     }
 

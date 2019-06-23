@@ -5,16 +5,16 @@ import org.hibernate.cfg.Configuration;
 
 public class SessionFactoryBuilder {
 
-    static SessionFactory sessionFactory = null;
+     SessionFactory sessionFactory = null;
 
-    public static SessionFactory createSessionFactory() {
+    public  SessionFactory createSessionFactory() {
         if (sessionFactory == null) {
-            sessionFactory = new Configuration().configure().buildSessionFactory();
+            sessionFactory = new Configuration().configure("hibernate.cfg.xml").buildSessionFactory();
         }
         return sessionFactory;
     }
 
-    public static void closeSessionFactory() {
+    public  void closeSessionFactory() {
         if (sessionFactory != null) {
             sessionFactory.close();
         }

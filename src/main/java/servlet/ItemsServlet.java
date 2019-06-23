@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -18,25 +20,37 @@ import java.util.List;
  */
 
 @WebServlet(urlPatterns = "/items")
-public class ItemServlet extends HttpServlet {
+public class ItemsServlet extends HttpServlet {
 
-    private DAOInterface itemRepository;
+    DAOInterface repo;
 
     @Override
     public void init() throws ServletException {
-        this.itemRepository = new ItemDao();
+        String JDBC_DRIVER = "oracle.jdbc.driver.OracleDriver";
+        try {
+            Class.forName(JDBC_DRIVER);
+        } catch (ClassNotFoundException e) {
+            System.out.println("Class " + JDBC_DRIVER + " not found");
+            return;
+        }
+        repo = ItemDao.getInstanceItemDao();
     }
+
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-          List<Item> items = itemRepository.getAllItems();
-          req.setAttribute("items", items);
-        RequestDispatcher dispatcher = req.getRequestDispatcher("/itemsJSP.jsp");
-        dispatcher.forward(req, resp);
+        resp.getWriter().write("Test1");
+
+        List<Item> items = repo.getAllItems();
+        req.setAttribute("items", items);
+        RequestDispatcher dispatcher =    req.getServletContext().getRequestDispatcher("/jsp/ItemsJSP.jsp");
+        dispatcher.forward(req,resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
+       // resp.getWriter().write("Test");
+
+
     }
 }

@@ -5,12 +5,27 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by oleg on 12.06.2019.
  */
 public class ItemDao extends SessionFactoryBuilder implements DAOInterface {
+    private ItemDao() {}
+
+    private static ItemDao instanceItemDao;
+
+    public static ItemDao getInstanceItemDao() {
+        if (instanceItemDao == null) {
+            instanceItemDao = new ItemDao();
+        }
+        return instanceItemDao;
+    }
+
+
     ArrayList<Item> items = null;
     Item item = null;
 
@@ -25,6 +40,7 @@ public class ItemDao extends SessionFactoryBuilder implements DAOInterface {
             tr.commit();
             System.out.println("getAllItems");
         } catch (HibernateException e) {
+
             System.out.println(e.getMessage());
             if (tr != null) {
                 tr.rollback();
@@ -58,16 +74,16 @@ public class ItemDao extends SessionFactoryBuilder implements DAOInterface {
         return item;
     }
 
-    public void deleteItem(Item item) {
+    public void deleteItem(long id) {
         Session session = null;
         Transaction tr = null;
         try {
             session = createSessionFactory().openSession();
             tr = session.getTransaction();
             tr.begin();
-            session.delete(item);
+            session.delete(getItemById(id));
             tr.commit();
-            System.out.println("deleteItem");
+            System.out.println("deleteItem" + id);
         } catch (HibernateException e) {
             System.out.println(e.getMessage());
             if (tr != null) {
@@ -122,5 +138,17 @@ public class ItemDao extends SessionFactoryBuilder implements DAOInterface {
         }
         return item;
     }
+
+
+//
+//    public boolean isExist(String name) {
+//        for (Item item : FakeStorage.storage().items()) {
+//            if (item.getName().equals(name)) {
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
+
 }
 
