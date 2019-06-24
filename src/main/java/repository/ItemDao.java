@@ -14,7 +14,8 @@ import java.util.List;
  * Created by oleg on 12.06.2019.
  */
 public class ItemDao extends SessionFactoryBuilder implements DAOInterface {
-    private ItemDao() {}
+    private ItemDao() {
+    }
 
     private static ItemDao instanceItemDao;
 
@@ -30,10 +31,8 @@ public class ItemDao extends SessionFactoryBuilder implements DAOInterface {
     Item item = null;
 
     public ArrayList<Item> getAllItems() {
-        Session session = null;
         Transaction tr = null;
-        try {
-            session = createSessionFactory().openSession();
+        try (Session session = createSessionFactory().openSession()) {
             tr = session.getTransaction();
             tr.begin();
             items = (ArrayList<Item>) session.createQuery("From Item ").list();
@@ -45,18 +44,13 @@ public class ItemDao extends SessionFactoryBuilder implements DAOInterface {
             if (tr != null) {
                 tr.rollback();
             }
-        } finally {
-            if (session != null)
-                session.close();
         }
         return items;
     }
 
     public Item getItemById(long id) {
-        Session session = null;
         Transaction tr = null;
-        try {
-            session = createSessionFactory().openSession();
+        try (Session session = createSessionFactory().openSession()) {
             tr = session.getTransaction();
             tr.begin();
             item = (Item) session.get(Item.class, id);
@@ -67,18 +61,13 @@ public class ItemDao extends SessionFactoryBuilder implements DAOInterface {
             if (tr != null) {
                 tr.rollback();
             }
-        } finally {
-            if (session != null)
-                session.close();
         }
         return item;
     }
 
     public void deleteItem(long id) {
-        Session session = null;
         Transaction tr = null;
-        try {
-            session = createSessionFactory().openSession();
+        try (Session session = createSessionFactory().openSession()) {
             tr = session.getTransaction();
             tr.begin();
             session.delete(getItemById(id));
@@ -89,17 +78,12 @@ public class ItemDao extends SessionFactoryBuilder implements DAOInterface {
             if (tr != null) {
                 tr.rollback();
             }
-        } finally {
-            if (session != null)
-                session.close();
         }
     }
 
     public Item saveItem(Item item) {
-        Session session = null;
         Transaction tr = null;
-        try {
-            session = createSessionFactory().openSession();
+        try (Session session = createSessionFactory().openSession()) {
             tr = session.getTransaction();
             tr.begin();
             session.save(item);
@@ -110,18 +94,13 @@ public class ItemDao extends SessionFactoryBuilder implements DAOInterface {
             if (tr != null) {
                 tr.rollback();
             }
-        } finally {
-            if (session != null)
-                session.close();
         }
         return item;
     }
 
     public Item updateItem(Item item) {
-        Session session = null;
         Transaction tr = null;
-        try {
-            session = createSessionFactory().openSession();
+        try (Session session = createSessionFactory().openSession()) {
             tr = session.getTransaction();
             tr.begin();
             session.update(item);
@@ -132,23 +111,8 @@ public class ItemDao extends SessionFactoryBuilder implements DAOInterface {
             if (tr != null) {
                 tr.rollback();
             }
-        } finally {
-            if (session != null)
-                session.close();
         }
         return item;
     }
-
-
-//
-//    public boolean isExist(String name) {
-//        for (Item item : FakeStorage.storage().items()) {
-//            if (item.getName().equals(name)) {
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
-
 }
 
